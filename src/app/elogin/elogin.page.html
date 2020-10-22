@@ -1,0 +1,102 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+<ion-card>
+  <ion-card-header class="ion-text-center">
+    <div *ngIf="isSignUp">
+      <h3>Create Account</h3>
+      <ion-button color="dark" class="ion-text-capitalize" (click)="changeType('login')">
+        SignIn 
+      </ion-button>
+    </div>
+  
+  <div *ngIf="islogin">
+    <h3>Sign In</h3>
+    <ion-button (click)="changeType('signup')">
+      New User 
+      </ion-button>
+  </div>
+  
+  <div *ngIf="isPasswordReset">
+    <h5>Reset Password</h5>
+    <ion-button  color="secondary" (click)="changeType('login')">Back login</ion-button>
+  </div>
+  
+  
+  </ion-card-header>
+  <ion-card-content>
+
+      
+<div class="cardz">
+  
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <!-- Email field -->
+    <ion-item [color]="email.valid && 'success'">
+      <ion-input placeholder="Email" formControlName="email" type="text" ></ion-input>
+    </ion-item>
+    
+    <ion-item *ngIf="email.invalid && email.dirty" lines="none">
+      <ion-text color="danger" class="form-error">
+        Please enter a valid email address.
+      </ion-text>
+    </ion-item>
+    <!-- email field end -->
+
+    <!-- password field start -->
+
+    <ion-item color="email.valid && 'success'" *ngIf="!isPasswordReset">
+      <ion-input placeholder="password" formControlName="password" type="password"></ion-input>
+    </ion-item>
+
+    <ion-item *ngIf="password.invalid && password.dirty" lines="none">
+      <ion-text color="danger" class="form-error">
+        password must be least 6 characters long !
+      </ion-text>
+    </ion-item>
+    <!-- password field end -->
+
+    <!-- password cormfirm field start -->
+
+    <ion-item color="passwordDoseMatch?'':'danger'" *ngIf="isSignUp">
+      <ion-input  placeholder="Confirm Password" formControlName="passwordConfirm" type="password" aria-autocomplete="off"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="passwordConfirm.invalid && !passwordDoseMatch" lines="none">
+      <ion-text color="danger" class="form-error">
+        password does not match
+      </ion-text>
+      <ion-text class="is-error">{{serverMessage}}</ion-text>
+    </ion-item>
+    <!-- password confirm field end -->
+    <ion-button color="primary" 
+    *ngIf="!isPasswordReset"
+    type="submit" 
+    [disabled]="form.invalid|| !passwordDoseMatch||loading">
+      login
+    </ion-button>
+
+  <ion-button color="primary"
+  *ngIf="isPasswordReset"
+  type="submit" [disabled]="loading">
+    Send Reset Email
+  </ion-button>
+  <p>{{serverMessage}}</p>
+<br>
+  <ion-button fill="clear"  color="danger" 
+  *ngIf="!isPasswordReset && !isPasswordReset"
+  type="submit" 
+  (click)="changeType('reset')">
+    forget password?
+  </ion-button>
+  </form>
+  </div>
+
+
+  </ion-card-content>
+</ion-card>
+</ion-content>
